@@ -9,6 +9,11 @@ import java.util.List;
 @Service
 public class ContatoService {
 
+    private final ContatosRepository contatosRepository;
+
+    public ContatoService(ContatosRepository contatosRepository) {
+        this.contatosRepository = contatosRepository;
+    }
 
     public Contato salvarContato(Contato contato) {
         return null;
