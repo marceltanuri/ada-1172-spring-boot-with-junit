@@ -4,7 +4,9 @@ import br.com.ada.t1172.agenda_contatots.model.Contato;
 import br.com.ada.t1172.agenda_contatots.repository.ContatosRepository;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.OpenOption;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContatoService {
@@ -15,18 +17,27 @@ public class ContatoService {
         this.contatosRepository = contatosRepository;
     }
 
-    public Contato salvarContato(Contato contato) {
-        return null;
+    public Contato salvarContato(Contato contato) throws IllegalArgumentException {
+        contatosRepository.findByEmail(contato.getEmail())
+        .ifPresent(existingContato -> {
+            throw new IllegalArgumentException("Já existe um contato com este e-mail.");
+        });
+
+        return contatosRepository.save(contato);
     }
 
-    public Contato buscarContatoPorId(long l) {
-        return null;
+    public Contato buscarContatoPorId(Long l) {
+        return contatosRepository.findById(l)
+            .orElseThrow(() -> new IllegalArgumentException("Contato não encontrado para o ID " + l));
     }
 
     public Contato buscarContatoPorEmail(String mail) {
-        return null;
+        return contatosRepository.findByEmail(mail)
+            .orElseThrow(() -> new IllegalArgumentException("Contato não encontrado para o email " + mail));
     }
 
     public void excluirContato(long l) {
+        contatosRepository.delete(contatosRepository.buscarContatoPorId(l));
+
     }
 }
