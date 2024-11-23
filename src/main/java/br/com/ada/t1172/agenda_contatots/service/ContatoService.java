@@ -27,7 +27,7 @@ public class ContatoService {
         if(!isValidEmail(contato.getEmail()))
             throw new IllegalArgumentException("O e-mail do contato é obrigatório e deve ser válido.");
 
-        return contatosRepository.save(contato);
+        return contato;//contatosRepository.save(contato);
     }
 
     public Contato buscarContatoPorId(long id) {
