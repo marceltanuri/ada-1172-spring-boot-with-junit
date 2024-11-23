@@ -1,6 +1,6 @@
 # Projeto de Agenda de Contatos
 
-Este projeto é um exercício do módulo de Testes do **Santander Coders 2024** que visa implementar uma aplicação de gerenciamento de contatos utilizando Java, Spring Framework e testes automatizados com JUnit e Mockito.
+Este projeto é um exercício do módulo de Testes Automatizados do **Santander Coders 2024** que visa implementar uma aplicação de gerenciamento de contatos utilizando Java, Spring Framework e testes automatizados com JUnit e Mockito.
 
 ## Objetivo
 
