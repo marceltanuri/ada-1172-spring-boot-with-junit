@@ -18,6 +18,7 @@ public class ContatoService {
     }
 
     public Contato salvarContato(Contato contato) throws IllegalArgumentException {
+        if (contato.getNome().isBlank()) throw new IllegalArgumentException("O nome do contato é obrigatório.");
         contatosRepository.findByEmail(contato.getEmail())
         .ifPresent(existingContato -> {
             throw new IllegalArgumentException("Já existe um contato com este e-mail.");
@@ -37,7 +38,6 @@ public class ContatoService {
     }
 
     public void excluirContato(long l) {
-        contatosRepository.delete(contatosRepository.buscarContatoPorId(l));
-
+        contatosRepository.deleteById(l);
     }
 }
