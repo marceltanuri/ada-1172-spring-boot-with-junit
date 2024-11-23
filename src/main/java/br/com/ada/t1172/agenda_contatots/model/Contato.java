@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
+
 import java.time.LocalDate;
 
 @Entity
