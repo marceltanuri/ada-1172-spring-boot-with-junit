@@ -6,6 +6,7 @@ import br.com.ada.t1172.agenda_contatots.validator.Validator;
 import br.com.ada.t1172.agenda_contatots.validator.impl.EmailValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 @Service
@@ -47,6 +48,9 @@ public class ContatoService {
                 .orElseThrow(NoSuchElementException::new);
     }
 
+    public Collection<Contato> buscarContatosPorNome(String nome) {
+        return contatosRepository.findByNomeContaining(nome);
+    }
 
     public void excluirContato(long id) {
 //        if (!contatosRepository.existsById(id)) {
