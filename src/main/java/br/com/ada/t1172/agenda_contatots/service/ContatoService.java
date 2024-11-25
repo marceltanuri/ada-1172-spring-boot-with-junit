@@ -34,6 +34,14 @@ public class ContatoService {
         return contatosRepository.save(contato);
     }
 
+    public List<Contato> listarTodosContatos() {
+        return (List<Contato>) contatosRepository.findAll();
+    }
+
+    public Iterable<Contato> buscarContatosPorNome(String nome) {
+        return contatosRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
     public Contato buscarContatoPorId(long l) {
         Contato contato = contatosRepository.findById(l)
                 .orElseThrow(() -> new RuntimeException("Contato: " + l + " - não encontrado."));
