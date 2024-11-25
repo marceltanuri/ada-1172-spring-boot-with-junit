@@ -15,6 +15,10 @@ public class ContatoService {
         this.contatosRepository = contatosRepository;
     }
 
+    public Iterable<Contato> listarContatos() {
+        return contatosRepository.findAll();
+    }
+
     public Contato salvarContato(Contato contato) {
         if (contato.getNome() == null || contato.getNome().isEmpty()) {
             throw new IllegalArgumentException("O nome do contato é obrigatório.");
