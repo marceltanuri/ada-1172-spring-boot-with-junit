@@ -16,17 +16,27 @@ public class ContatoService {
     }
 
     public Contato salvarContato(Contato contato) {
-        return null;
+        if (contato.getNome() == null || contato.getNome().isEmpty()) {
+            throw new IllegalArgumentException("O nome do contato é obrigatório.");
+        }
+        if (contato.getEmail() == null || !contato.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            throw new IllegalArgumentException("O e-mail do contato é obrigatório e deve ser válido.");
+        }
+        if (contatosRepository.findByEmail(contato.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Já existe um contato com este e-mail.");
+        }
+        return contatosRepository.save(contato);
     }
 
     public Contato buscarContatoPorId(long l) {
-        return null;
+        return contatosRepository.findById(l).orElse(null);
     }
 
     public Contato buscarContatoPorEmail(String mail) {
-        return null;
+        return contatosRepository.findByEmail(mail).orElse(null);
     }
 
     public void excluirContato(long l) {
+        contatosRepository.deleteById(l);
     }
 }
