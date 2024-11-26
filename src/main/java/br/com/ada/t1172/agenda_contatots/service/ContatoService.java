@@ -38,6 +38,9 @@ public class ContatoService {
     }
 
     public void excluirContato(long l) {
+        if (!contatosRepository.existsById(l)) {
+            throw new IllegalArgumentException("Contato não encontrado.");
+        }
         contatosRepository.deleteById(l);
     }
 
