@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ContatoServiceTest {
@@ -90,6 +91,21 @@ public class ContatoServiceTest {
         // Verifica se o contato retornado é o correto
         assertNotNull(resultado);
         assertEquals("joao.silva@example.com", resultado.getEmail());
+    }
+
+    @Test
+    public void buscarContatoPorParteDoNome_DeveRetornarContato() {
+        // Simulando o comportamento do repositório
+        when(contatoRepository.findByNomeContaining("Silva")).thenReturn(List.of(contato));
+
+        // Chama o método do serviço
+        List<Contato> resultado = contatoService.buscarContatoPorParteDoNome("Silva");
+
+        // Verifica se o contato (ou a lista) retornado é o correto
+        assertNotNull(resultado);
+        for (Contato contato : resultado) {
+            assertTrue(contato.getNome().contains("João"), "O nome não contém o parâmetro buscado.");
+        }
     }
 
     // Teste para excluir um contato

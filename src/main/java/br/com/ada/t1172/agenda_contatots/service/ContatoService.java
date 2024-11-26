@@ -16,17 +16,39 @@ public class ContatoService {
     }
 
     public Contato salvarContato(Contato contato) {
-        return null;
+        if (contatosRepository.findByEmail(contato.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Já existe um contato com este e-mail.");
+        }
+        if (contato.getNome().isEmpty()) {
+            throw new IllegalArgumentException("O nome do contato é obrigatório.");
+        }
+        if (!contato.getEmail().contains("@") && !contato.getEmail().contains(".")) {
+            throw new IllegalArgumentException("O e-mail do contato é obrigatório e deve ser válido.");
+        }
+
+        return contatosRepository.save(contato);
     }
 
     public Contato buscarContatoPorId(long l) {
-        return null;
+        return contatosRepository.findById(l).orElse(null);
     }
 
     public Contato buscarContatoPorEmail(String mail) {
-        return null;
+        return contatosRepository.findByEmail(mail).orElse(null);
     }
 
     public void excluirContato(long l) {
+        if (!contatosRepository.existsById(l)) {
+            throw new IllegalArgumentException("Contato não encontrado.");
+        }
+        contatosRepository.deleteById(l);
+    }
+
+    public List<Contato> buscarContatoPorParteDoNome(String parteNome) {
+        List<Contato> contatos = contatosRepository.findByNomeContaining(parteNome);
+        if (contatos.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum contato encontrado.");
+        }
+        return contatos;
     }
 }
