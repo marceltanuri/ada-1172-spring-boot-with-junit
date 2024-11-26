@@ -40,4 +40,12 @@ public class ContatoService {
     public void excluirContato(long l) {
         contatosRepository.deleteById(l);
     }
+
+    public List<Contato> buscarContatoPorParteDoNome(String parteNome) {
+        List<Contato> contatos = contatosRepository.findByNomeContaining(parteNome);
+        if (contatos.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum contato encontrado.");
+        }
+        return contatos;
+    }
 }
