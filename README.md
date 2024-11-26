@@ -1,99 +1,96 @@
 # Projeto de Agenda de Contatos
 
-Este projeto é um exercício do módulo de Testes Automatizados do **Santander Coders 2024** que visa implementar uma aplicação de gerenciamento de contatos utilizando Java, Spring Framework e testes automatizados com JUnit e Mockito.
+Este projeto é um exercício do módulo de Testes Automatizados do **Santander Coders 2024**.
 
-## Objetivo
+A API foi desenvolvida com Spring Boot e utiliza **Test-Driven Development (TDD)** como metodologia central, focando na criação de testes para validar as funcionalidades principais da aplicação.
 
-O objetivo do projeto é criar as classes e métodos necessários para passar em todos os testes definidos na classe de teste `ContatoServiceTest`.
+## Tecnologias utilizadas
 
-## Tecnologias Utilizadas
-
-- **Java 21**: Linguagem de programação principal.
-- **Spring Framework**: Para injeção de dependência e integração com o JPA.
-- **Spring JPA**: Para persistência e acesso a banco de dados.
-- **JUnit 5**: Para a criação e execução de testes unitários.
-- **Mockito**: Para simulação de dependências nos testes.
-
-## Estrutura do Projeto
-
-O projeto possui os seguintes pacotes e classes principais:
-
-### Pacotes
-
-1. **`model`**:
-    - Contém a classe de entidade `Contato`.
-
-2. **`repository`**:
-    - Contém o repositório `ContatosRepository` que interage com o banco de dados.
-
-3. **`service`**:
-    - Contém a classe `ContatoService`, que implementa a lógica de negócio.
-
-4. **`test`**:
-    - Contém os testes automatizados em `ContatoServiceTest`.
-
-### Classes
-
-#### `Contato`
-Representa a entidade de contato. A classe deve incluir:
-
-- **Atributos**:
-    - `id`: Identificador único (auto-gerado).
-    - `nome`: Nome do contato.
-    - `email`: E-mail do contato.
-    - `telefone`: Telefone do contato.
-
-- **Validações**:
-    - O nome deve ser obrigatório e não vazio.
-    - O e-mail deve ser obrigatório e no formato válido.
-
-#### `ContatosRepository`
-Interface que estende `JpaRepository`, responsável por interagir com o banco de dados. Métodos necessários:
-
-- `Optional<Contato> findByEmail(String email);`
-
-#### `ContatoService`
-Classe que contém a lógica de negócios. Métodos principais:
-
-1. **`salvarContato(Contato contato)`**:
-    - Salva um novo contato.
-    - Verifica se o e-mail já está cadastrado.
-    - Valida o nome e o e-mail.
-
-2. **`buscarContatoPorId(Long id)`**:
-    - Busca um contato pelo ID.
-
-3. **`buscarContatoPorEmail(String email)`**:
-    - Busca um contato pelo e-mail.
-
-4. **`excluirContato(Long id)`**:
-    - Exclui um contato pelo ID.
+- **Java 21**
+- **Spring Boot**
+- **Gradle**
+- **JUnit 5**
+- **Mockito**
 
 ## Funcionalidades
 
-A aplicação deve permitir:
+### Endpoints disponíveis:
 
-- Adicionar um novo contato com validação de dados.
-- Buscar contatos por ID ou e-mail.
-- Excluir contatos existentes.
-- Garantir que nenhum contato com e-mail duplicado seja salvo.
+A API expõe os seguintes endpoints para gerenciar contatos:
 
-## Testes Automatizados
+1. **Salvar contato**
+    - Método: `POST`
+    - URL: `/contatos/salvar`
+    - Corpo da requisição:
+      ```json
+      {
+        "nome": "João Silva",
+        "email": "joao.silva@teste.com",
+        "telefone": "11987654321"
+      }
+      ```  
 
-Os testes estão localizados em `ContatoServiceTest` e incluem:
+2. **Buscar contato por ID**
+    - Método: `GET`
+    - URL: `/contatos/buscar/{id}`
 
-1. **Teste de criação de contato**: Verifica se o contato é salvo corretamente.
-2. **Teste de validação de e-mail duplicado**: Certifica-se de que contatos com e-mail já cadastrado não são permitidos.
-3. **Teste de busca por ID e e-mail**: Garante que os métodos de busca retornem os contatos corretos.
-4. **Teste de exclusão de contato**: Valida se a exclusão funciona conforme esperado.
-5. **Teste de validação de campos**: Testa cenários de erro, como nome vazio ou e-mail inválido.
+3. **Buscar contato por email**
+    - Método: `GET`
+    - URL: `/contatos/buscar/{email}`
+
+4. **Buscar contatos por parte do nome**
+    - Método: `GET`
+    - URL: `/contatos/buscar/{parte-nome}`
+
+5. **Excluir contato**
+    - Método: `DELETE`
+    - URL: `/contatos/excluir/{id}`
+
+### Validações:
+- Nome não pode estar vazio.
+- E-mail deve ser válido (contendo `@` e `.`).
+- Não é permitido salvar contatos com emails duplicados.
+
+---
+
+## Testes
+
+O projeto adota **TDD**, com testes abrangentes para classes de serviço e controller.
+
+### Testes no Service:
+Os testes para a classe `ContatoService` garantem que:
+- Contatos sejam salvos corretamente.
+- Não seja permitido salvar contatos com e-mail já existente.
+- Contatos sejam buscados corretamente por ID, e-mail ou parte do nome.
+- Contatos sejam excluídos corretamente.
+- Validações de nome e email funcionem conforme esperado.
+
+### Testes no Controller:
+Os testes para a classe `ContatoController` garantem que:
+- As chamadas aos endpoints sejam redirecionadas corretamente para o service.
+- Respostas apropriadas sejam retornadas para as requisições.
+
+Exemplo de teste no `ContatoControllerTest`:
+```java
+@Test
+public void buscarContatoPorId_DeveRetornarContato() {
+    when(contatoService.buscarContatoPorId(1L)).thenReturn(contato);
+
+    Contato resultado = contatoController.buscarContatoPorId(1L);
+
+    assertNotNull(resultado);
+    assertEquals("João Silva", resultado.getNome());
+}
+```
+
+---
 
 ## Como Executar o Projeto
 
 1. **Clone o repositório**:
    ```bash
    git clone https://github.com/gonzaga95/ada-1172-spring-boot-with-junit
-   cd ada-1172-spring-boot-with-junitO
+   cd ada-1172-spring-boot-with-junit
    ```
 
 2. **Configure o ambiente**:
@@ -104,14 +101,4 @@ Os testes estão localizados em `ContatoServiceTest` e incluem:
    ```bash
    ./gradlew test
    ```
-
-## Estrutura do Banco de Dados
-
-A aplicação utiliza um banco de dados em memória para persistência temporária. A estrutura da tabela `contato` será criada automaticamente pelo Spring JPA.
-
-- **Tabela `contato`**:
-    - `id` (PK): Long
-    - `nome`: String
-    - `email`: String (único)
-    - `telefone`: String
 
