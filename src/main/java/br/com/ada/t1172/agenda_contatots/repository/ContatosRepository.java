@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ContatosRepository extends CrudRepository<Contato, Long> {
 
-    Iterable<Contato> findByNomeContaining(String nome);
+    Iterable<Contato> findByNomeContainingIgnoreCase(String nome);
 
     Optional<Contato> findByEmail(String email);
 
